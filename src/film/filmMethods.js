@@ -1,5 +1,4 @@
-const mongoose = require("mongoose");
-const yargs = require("yargs");
+const { argv } = require("yargs");
 const FilmModel = require("./filmModel");
 
 //Adds a new movie using the Film schema.
@@ -37,6 +36,7 @@ exports.search = async (argv) => {
   }
 };
 
+//Finds a film by its' title and then updates based on whichever "new" key value pair the user passed e.g. newtitle becomes title.
 exports.update = async (argv) => {
   try {
     if (argv.newtitle) {
@@ -65,6 +65,11 @@ exports.update = async (argv) => {
   }
 };
 
+//Finds and deletes based on the title, since that's the only unique & required value. Probably worth including ID as an option here for very persnickety usage
 exports.deleteOne = async () => {
-  //Delete one entry goes here
+  try {
+    await FilmModel.findOneAndDelete({ title: argv.title });
+  } catch (error) {
+    console.log(error);
+  }
 };

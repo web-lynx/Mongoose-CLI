@@ -2,7 +2,13 @@ require("./db/connection");
 const mongoose = require("mongoose");
 const yargs = require("yargs/yargs");
 const { hideBin } = require("yargs/helpers");
-const { addFilm, list, search, update } = require("./film/filmMethods");
+const {
+  addFilm,
+  list,
+  search,
+  update,
+  deleteOne,
+} = require("./film/filmMethods");
 const argv = yargs(hideBin(process.argv)).argv;
 
 let helpText = `Interacts with an example MongoDB films database, using command-line arguments. Commands include:
@@ -29,14 +35,13 @@ const app = async () => {
   } else if (argv.update) {
     await update(argv);
   } else if (argv.delete) {
-    //Delete goes here
+    await deleteOne(argv);
   } else if (argv.info) {
     console.log(helpText);
   } else {
     console.log("Sorry, incorrect command.");
   }
   mongoose.connection.close();
-  console.log("Connection closed.");
 };
 
 app();
